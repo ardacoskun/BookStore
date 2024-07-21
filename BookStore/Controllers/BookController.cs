@@ -1,5 +1,8 @@
-﻿using BookStore.DBOperations;
+﻿using BookStore.BooksOperations.CreateBook;
+using BookStore.BooksOperations.GetBooks;
+using BookStore.DBOperations;
 using Microsoft.AspNetCore.Mvc;
+using static BookStore.BooksOperations.CreateBook.CreateBookCommand;
 
 namespace BookStore.Controllers;
 
@@ -16,10 +19,14 @@ public class BookController : ControllerBase
     }
 
     [HttpGet]
-    public List<Book> GetBooks()
+    public IActionResult GetBooks()
     {
-        var bookList = _context.Books.OrderBy(x => x.Id).ToList<Book>();
-        return bookList;
+        //var bookList = _context.Books.OrderBy(x => x.Id).ToList<Book>();
+        //return bookList;
+
+        GetBooksQuery query = new GetBooksQuery(_context);
+        var result = query.Handle();
+        return Ok(result);
     }
 
     //FromRoute
@@ -42,18 +49,31 @@ public class BookController : ControllerBase
     //}
 
     [HttpPost]
-    public IActionResult AddBook([FromBody] Book newBook)
+    public IActionResult AddBook([FromBody] CreateBookModel newBook)
     {
-        var book = _context.Books.SingleOrDefault(x => x.Title == newBook.Title);
+        //var book = _context.Books.SingleOrDefault(x => x.Title == newBook.Title);
 
-        if (book is not null)
+        //if (book is not null)
+        //{
+        //    return BadRequest();
+        //}
+        //_context.Books.Add(newBook);
+        //_context.SaveChanges();
+
+        CreateBookCommand command = new CreateBookCommand(_context);
+
+        try
         {
-            return BadRequest();
-        }
-        _context.Books.Add(newBook);
-        _context.SaveChanges();
+            command.Model = newBook;
+            command.Handle();
 
-        return Ok($"{newBook.Title} has saved successfully.");
+            return Ok($"{newBook.Title} has saved successfully.");
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+
     }
 
     [HttpPut("{id}")]
