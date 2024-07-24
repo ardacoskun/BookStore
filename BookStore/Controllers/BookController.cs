@@ -1,4 +1,5 @@
-﻿using BookStore.BooksOperations.CreateBook;
+﻿using AutoMapper;
+using BookStore.BooksOperations.CreateBook;
 using BookStore.BooksOperations.DeleteBook;
 using BookStore.BooksOperations.GetBookDetail;
 using BookStore.BooksOperations.GetBooks;
@@ -17,10 +18,12 @@ public class BookController : ControllerBase
 {
 
     private readonly BookStoreDBContext _context;
+    private readonly IMapper mapper;
 
-    public BookController(BookStoreDBContext context)
+    public BookController(BookStoreDBContext context, IMapper mapper)
     {
         _context = context;
+        this.mapper = mapper;
     }
 
     [HttpGet]
@@ -29,7 +32,7 @@ public class BookController : ControllerBase
         //var bookList = _context.Books.OrderBy(x => x.Id).ToList<Book>();
         //return bookList;
 
-        GetBooksQuery query = new GetBooksQuery(_context);
+        GetBooksQuery query = new GetBooksQuery(_context, mapper);
         var result = query.Handle();
         return Ok(result);
     }
@@ -45,7 +48,7 @@ public class BookController : ControllerBase
 
         try
         {
-            GetBookDetailQuery query = new GetBookDetailQuery(_context);
+            GetBookDetailQuery query = new GetBookDetailQuery(_context, mapper);
             query.BookId = id;
             result = query.Handle();
 
@@ -81,7 +84,7 @@ public class BookController : ControllerBase
         //_context.Books.Add(newBook);
         //_context.SaveChanges();
 
-        CreateBookCommand command = new CreateBookCommand(_context);
+        CreateBookCommand command = new CreateBookCommand(_context, mapper);
 
         try
         {
