@@ -5,6 +5,8 @@ using BookStore.BooksOperations.GetBookDetail;
 using BookStore.BooksOperations.GetBooks;
 using BookStore.BooksOperations.UpdateBook;
 using BookStore.DBOperations;
+using FluentValidation;
+using FluentValidation.Results;
 using Microsoft.AspNetCore.Mvc;
 using static BookStore.BooksOperations.CreateBook.CreateBookCommand;
 using static BookStore.BooksOperations.GetBookDetail.GetBookDetailQuery;
@@ -50,6 +52,10 @@ public class BookController : ControllerBase
         {
             GetBookDetailQuery query = new GetBookDetailQuery(_context, mapper);
             query.BookId = id;
+
+            GetBookDetailQueryValidator validator = new();
+            validator.ValidateAndThrow(query);
+
             result = query.Handle();
 
             return Ok(result);
@@ -89,9 +95,24 @@ public class BookController : ControllerBase
         try
         {
             command.Model = newBook;
+
+            CreateBookCommandValidator validator = new();
+            ValidationResult result= validator.Validate(command);
+
+            //if(!result.IsValid)
+            //foreach (var item in result.Errors)
+            //Console.WriteLine("Özellik:" + item.PropertyName + "-Error Message:" +item.ErrorMessage);
+            //else
+            //{
+            //command.Handle();
+            //}
+
+            validator.ValidateAndThrow(command);
             command.Handle();
 
             return Ok($"{newBook.Title} has saved successfully.");
+
+
         }
         catch (Exception ex)
         {
@@ -123,6 +144,10 @@ public class BookController : ControllerBase
             UpdateBookCommand command = new UpdateBookCommand(_context);
             command.BookId = id;
             command.Model = updatedBook;
+
+            UpdateBookCommandValidator validator= new();
+            validator.ValidateAndThrow(command);
+
             command.Handle();
 
             return Ok($"{updatedBook.Title} updated successfully");
@@ -149,6 +174,10 @@ public class BookController : ControllerBase
         {
             DeleteBookCommand command = new DeleteBookCommand(_context);
             command.BookId = id;
+
+            DeleteBookCommandValidator validator=new();
+            validator.ValidateAndThrow(command);
+
             command.Handle();
 
             return Ok("Bookd deleted successfully.");
