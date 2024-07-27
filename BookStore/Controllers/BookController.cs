@@ -48,8 +48,8 @@ public class BookController : ControllerBase
 
         BookDetailViewModel result;
 
-        try
-        {
+        //try
+        //{
             GetBookDetailQuery query = new GetBookDetailQuery(_context, mapper);
             query.BookId = id;
 
@@ -59,11 +59,11 @@ public class BookController : ControllerBase
             result = query.Handle();
 
             return Ok(result);
-        }
-        catch (Exception ex)
-        {
-            return BadRequest(ex.Message);
-        }
+        //}
+        //catch (Exception ex)
+        //{
+        //    return BadRequest(ex.Message);
+        //}
 
 
     }
@@ -92,8 +92,8 @@ public class BookController : ControllerBase
 
         CreateBookCommand command = new CreateBookCommand(_context, mapper);
 
-        try
-        {
+        //try
+        //{
             command.Model = newBook;
 
             CreateBookCommandValidator validator = new();
@@ -113,11 +113,11 @@ public class BookController : ControllerBase
             return Ok($"{newBook.Title} has saved successfully.");
 
 
-        }
-        catch (Exception ex)
-        {
-            return BadRequest(ex.Message);
-        }
+        //}
+        //catch (Exception ex)
+        //{
+        //    return BadRequest(ex.Message);
+        //}
 
     }
 
@@ -139,8 +139,8 @@ public class BookController : ControllerBase
 
         //return Ok(updatedBook);
 
-        try
-        {
+        //try
+        //{
             UpdateBookCommand command = new UpdateBookCommand(_context);
             command.BookId = id;
             command.Model = updatedBook;
@@ -151,11 +151,11 @@ public class BookController : ControllerBase
             command.Handle();
 
             return Ok($"{updatedBook.Title} updated successfully");
-        }
-        catch (Exception ex)
-        {
-            return BadRequest(ex.Message);
-        }
+        //}
+        //catch (Exception ex)
+        //{
+        //    return BadRequest(ex.Message);
+        //}
     }
 
     [HttpDelete("{id}")]
@@ -170,8 +170,8 @@ public class BookController : ControllerBase
         //_context.Books.Remove(book);
         //_context.SaveChanges();
 
-        try
-        {
+        //try
+        //{
             DeleteBookCommand command = new DeleteBookCommand(_context);
             command.BookId = id;
 
@@ -181,12 +181,11 @@ public class BookController : ControllerBase
             command.Handle();
 
             return Ok("Bookd deleted successfully.");
-        }
-        catch (Exception ex)
-        {
-
-            return BadRequest(ex.Message);
-        }
+        //}
+        //catch (Exception ex)
+        //{
+        //    return BadRequest(ex.Message);
+        //}
 
     }
 
