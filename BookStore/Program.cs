@@ -1,6 +1,7 @@
 using BookStore.Common;
 using BookStore.DBOperations;
 using BookStore.Middlewares;
+using BookStore.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,6 +14,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<BookStoreDBContext>(options => options.UseInMemoryDatabase(databaseName: "BookStoreDB"));
 builder.Services.AddAutoMapper(typeof(MappingProfile));
+builder.Services.AddSingleton<ILoggerService,ConsoleLogger>();
+//builder.Services.AddSingleton<ILoggerService,DBLogger>();
 
 var app = builder.Build();
 
