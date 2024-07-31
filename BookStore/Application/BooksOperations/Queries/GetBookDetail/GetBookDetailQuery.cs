@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using BookStore.DBOperations;
+using Microsoft.EntityFrameworkCore;
 
 namespace BookStore.Application.BooksOperations.Queries.GetBookDetail;
 
@@ -18,7 +19,7 @@ public class GetBookDetailQuery
 
     public BookDetailViewModel Handle()
     {
-        var book = _dbContext.Books.Where(x => x.Id == BookId).SingleOrDefault();
+        var book = _dbContext.Books.Include(x => x.Genre).Where(x => x.Id == BookId).SingleOrDefault();
 
         if (book is null)
         {
