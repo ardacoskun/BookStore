@@ -25,12 +25,6 @@ public class CreateBookCommand
         {
             throw new InvalidOperationException("This book already exists!");
         }
-        //book = new Book();
-        //book.Title = Model.Title;
-        //book.PublishDate = Model.PublishDate;
-        //book.GenreId = Model.GenreId;
-        //book.PageCount = Model.PageCount;
-
         book = mapper.Map<Book>(Model);
 
         _dbContext.Books.Add(book);

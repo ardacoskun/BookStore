@@ -26,12 +26,6 @@ public class GetBookDetailQuery
             throw new InvalidOperationException("There is no book with this book id.");
         }
 
-        //BookDetailViewModel viewModel = new BookDetailViewModel();
-        //viewModel.Title = book.Title;
-        //viewModel.Genre = ((GenreEnum)book.GenreId).ToString();
-        //viewModel.PageCount = book.PageCount;
-        //viewModel.PublishDate = book.PublishDate.Date.ToString("dd/MM/yyy");
-
         BookDetailViewModel viewModel = mapper.Map<BookDetailViewModel>(book);
 
         return viewModel;
