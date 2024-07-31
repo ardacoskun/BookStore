@@ -1,7 +1,10 @@
 ﻿using AutoMapper;
+using BookStore.Application.GenreOperations.Commands.CreateGenre;
+using BookStore.Application.GenreOperations.Commands.UpdateGenre;
 using BookStore.Application.GenreOperations.Queries.GetGenreDetail;
 using BookStore.Application.GenreOperations.Queries.GetGenres;
 using BookStore.DBOperations;
+using BookStore.Entities;
 using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -42,4 +45,33 @@ public class GenreController : ControllerBase
         var obj = query.Handle();
         return Ok(obj);
     }
+
+    [HttpPost]
+    public IActionResult AddGenre([FromBody] CreateGenreModel newGenre)
+    {
+        CreateGenreCommand command = new CreateGenreCommand(_context);
+        command.Model = newGenre;
+
+        CreateGenreCommandValidator validator=new CreateGenreCommandValidator();
+        validator.ValidateAndThrow(command);
+
+        command.Handle();
+        return Ok(); 
+    }
+
+    [HttpPut("id")]
+    public IActionResult UpdateGenre([FromRoute] int id, [FromBody] UpdateGenreModel updateGenreModel)
+    {
+        UpdateGenreCommand command=new UpdateGenreCommand(_context);
+        command.GenreId=id;
+
+        UpdateGenreCommandValidator validator = new UpdateGenreCommandValidator();
+        validator.ValidateAndThrow(command);
+
+        command.Model = updateGenreModel;
+
+        command.Handle();
+        return Ok();
+    }
+
 }
