@@ -1,16 +1,16 @@
 ﻿using AutoMapper;
-using BookStore.BooksOperations.CreateBook;
-using BookStore.BooksOperations.DeleteBook;
-using BookStore.BooksOperations.GetBookDetail;
-using BookStore.BooksOperations.GetBooks;
-using BookStore.BooksOperations.UpdateBook;
+using BookStore.Application.BooksOperations.Commands.CreateBook;
+using BookStore.Application.BooksOperations.Commands.DeleteBook;
 using BookStore.DBOperations;
 using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Mvc;
-using static BookStore.BooksOperations.CreateBook.CreateBookCommand;
-using static BookStore.BooksOperations.GetBookDetail.GetBookDetailQuery;
-using static BookStore.BooksOperations.UpdateBook.UpdateBookCommand;
+using static BookStore.Application.BooksOperations.Commands.CreateBook.CreateBookCommand;
+using static BookStore.Application.BooksOperations.Queries.GetBookDetail.GetBookDetailQuery;
+using static BookStore.Application.BooksOperations.Commands.UpdateBook.UpdateBookCommand;
+using BookStore.Application.BooksOperations.Commands.UpdateBook;
+using BookStore.Application.BooksOperations.Queries.GetBookDetail;
+using BookStore.Application.BooksOperations.Queries.GetBooks;
 
 namespace BookStore.Controllers;
 

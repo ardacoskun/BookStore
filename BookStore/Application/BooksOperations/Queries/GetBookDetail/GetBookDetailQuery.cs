@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using BookStore.DBOperations;
 
-namespace BookStore.BooksOperations.GetBookDetail;
+namespace BookStore.Application.BooksOperations.Queries.GetBookDetail;
 
 public class GetBookDetailQuery
 {
