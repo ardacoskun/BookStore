@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using BookStore.Application.BooksOperations.Commands.DeleteBook;
 using BookStore.Application.GenreOperations.Commands.CreateGenre;
+using BookStore.Application.GenreOperations.Commands.DeleteGenre;
 using BookStore.Application.GenreOperations.Commands.UpdateGenre;
 using BookStore.Application.GenreOperations.Queries.GetGenreDetail;
 using BookStore.Application.GenreOperations.Queries.GetGenres;
@@ -71,6 +73,20 @@ public class GenreController : ControllerBase
         command.Model = updateGenreModel;
 
         command.Handle();
+        return Ok();
+    }
+
+    [HttpDelete("id")]
+    public IActionResult DeleteGenre([FromRoute] int id)
+    {
+        DeleteGenreCommand command=new DeleteGenreCommand(_context);
+        command.GenreId = id;
+
+        DeleteGenreCommandValidator validator=new DeleteGenreCommandValidator();
+        validator.ValidateAndThrow(command);
+
+        command.Handle();
+
         return Ok();
     }
 
